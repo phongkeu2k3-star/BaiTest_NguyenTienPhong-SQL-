@@ -16,15 +16,12 @@ namespace BaiTest_NguyenTienPhong_SQL.Controllers
             _context = context;
         }
 
-        // 1. Lấy danh sách (Đã có - OK)
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
 
-        // 2. Lấy chi tiết 1 người (ĐÂY LÀ HÀM BẠN ĐANG THIẾU)
-        // Nếu không có hàm này, ấn nút Sửa sẽ bị lỗi 404
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -33,17 +30,15 @@ namespace BaiTest_NguyenTienPhong_SQL.Controllers
             return user;
         }
 
-        // 3. Thêm người dùng mới
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
-            user.Id = 0; // Quan trọng: Đặt về 0 để SQL tự sinh ID, tránh lỗi Swagger
+            user.Id = 0;
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return Ok(user);
         }
 
-        // 4. Cập nhật thông tin
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
@@ -62,7 +57,6 @@ namespace BaiTest_NguyenTienPhong_SQL.Controllers
             return NoContent();
         }
 
-        // 5. Xóa người dùng
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

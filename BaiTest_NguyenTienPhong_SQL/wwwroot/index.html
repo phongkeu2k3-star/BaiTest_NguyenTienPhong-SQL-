@@ -22,7 +22,6 @@
         .form-control:focus {
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
         }
-        /* Style cho lỗi validate */
         .is-invalid {
             border-color: #dc3545 !important;
             background-image: none !important;
@@ -115,11 +114,9 @@
     <script>
         const apiUrl = '/api/Users';
 
-        // 1. Validate Form (Kiểm tra dữ liệu)
         function validateForm() {
             let isValid = true;
 
-            // Hàm con để hiện/ẩn lỗi
             const showError = (id, show) => {
                 const el = document.getElementById(id);
                 const msg = document.getElementById('err-' + id);
@@ -133,17 +130,14 @@
                 }
             };
 
-            // Lấy giá trị
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const dob = document.getElementById('dob').value;
 
-            // Regex kiểm tra Email và SĐT
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const phoneRegex = /^0\d{9,10}$/;
 
-            // Logic kiểm tra
             showError('name', name === "");
             showError('dob', dob === "");
             showError('email', !emailRegex.test(email));
@@ -152,7 +146,6 @@
             return isValid;
         }
 
-        // 2. Load Danh sách
         async function loadUsers() {
             try {
                 const res = await fetch(apiUrl);
@@ -185,9 +178,7 @@
             } catch (e) { console.error(e); }
         }
 
-        // 3. Edit User
         async function editUser(id) {
-            // Reset lỗi cũ trước khi load dữ liệu mới
             document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
             document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
 
@@ -210,9 +201,8 @@
             }
         }
 
-        // 4. Save User (Đã thêm Validate)
+
         async function saveUser() {
-            // GỌI HÀM VALIDATE Ở ĐÂY
             if (!validateForm()) return;
 
             const id = parseInt(document.getElementById('hiddenId').value);
@@ -237,7 +227,6 @@
                 resetForm();
                 loadUsers();
             } else {
-                // Nếu Backend trả về lỗi (ví dụ trùng Email)
                 const errData = await res.json();
                 alert("Lỗi từ hệ thống: " + JSON.stringify(errData.errors || "Lỗi không xác định"));
             }
@@ -254,7 +243,6 @@
             document.getElementById('displayId').value = "";
             document.querySelectorAll('input:not([type=hidden])').forEach(i => i.value = "");
 
-            // Xóa các thông báo lỗi
             document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
             document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
 
